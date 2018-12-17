@@ -122,6 +122,19 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 SectionEnd
 
+Function .onInit
+  InitPluginsDir
+  File "/oname=$PluginsDir\spltmp.bmp" "C:\temp\Installer\logo.bmp"
+
+; optional
+  File /oname=C:\temp\Installer\my_splashsound.wav "my_splashsound.wav"
+
+  advsplash::show 1000 600 400 -1 $PluginsDir\spltmp
+
+  Pop $0 ; $0 has '1' if the user closed the splash screen early,
+         ; '0' if everything closed normally, and '-1' if some error occurred.
+FunctionEnd
+
 Function un.onUninstSuccess
   HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) has been completely removed from your computer."
