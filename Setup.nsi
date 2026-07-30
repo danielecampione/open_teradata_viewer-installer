@@ -122,6 +122,25 @@ Section -Post
 SectionEnd
 
 Function .onInit
+  ; Always silently remove any previous installation before proceeding,
+  ; so the new version is never installed on top of stale files. This is
+  ; a no-op on a first-time install: if the uninstall registry key isn't
+  ; there, $R0 comes back empty and nothing runs.
+  ReadRegStr $R0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+  StrCmp $R0 "" no_previous_install
+
+  ; /S runs the old uninstaller silently (no confirmation prompt, no UI -
+  ; un.onInit below skips its confirmation box specifically when running
+  ; silent). _?=$INSTDIR keeps it running from its original folder
+  ; instead of copying itself to a temp folder first: that is what makes
+  ; ExecWait actually block until the removal is done, instead of
+  ; returning immediately while it still runs in the background. The
+  ; uninstaller path must stay quoted, or ExecWait silently fails to wait
+  ; whenever that path has no spaces in it.
+  ExecWait '"$R0" /S _?=$INSTDIR'
+
+  no_previous_install:
+
   InitPluginsDir
   File "/oname=$PluginsDir\spltmp.bmp" "C:\Users\campi\Documents\File utili\Progetti personali\Applicazioni Standalone\Open Teradata Viewer\File utili\logo.bmp"
 
@@ -140,8 +159,15 @@ Function un.onUninstSuccess
 FunctionEnd
 
 Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
+  ; Skip the confirmation entirely when running silently - i.e. when
+  ; .onInit above launches this same uninstaller with /S to clear out a
+  ; previous installation before the new one proceeds. A manual
+  ; uninstall (Control Panel, Start Menu shortcut) still shows the usual
+  ; confirmation below, unchanged.
+  IfSilent skip_confirmation
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES skip_confirmation
   Abort
+  skip_confirmation:
 FunctionEnd
 
 Section Uninstall
