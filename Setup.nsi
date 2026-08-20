@@ -1,4 +1,4 @@
-; Installer for Open Teradata Viewer 0.34b
+; Installer for Open Teradata Viewer 0.34c
 ;
 ; This script is written in NSIS language.
 ;
@@ -7,10 +7,10 @@
 ;--------------------------------
 
 !define PRODUCT_NAME "Open Teradata Viewer"
-!define PRODUCT_VERSION "0.34b"
+!define PRODUCT_VERSION "0.34c"
 !define PRODUCT_PUBLISHER "Open Source Community"
 !define PRODUCT_WEB_SITE "http://openteradata.sourceforge.net"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\open_teradata_viewer_0.34b.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\open_teradata_viewer_0.34c.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
@@ -41,7 +41,7 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\open_teradata_viewer_0.34b.exe"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\open_teradata_viewer_0.34c.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -53,7 +53,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "open_teradata_viewer_0.34b_setup.exe"
+OutFile "open_teradata_viewer_0.34c_setup.exe"
 InstallDir "$PROGRAMFILES\Open Teradata Viewer"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -62,7 +62,7 @@ ShowUnInstDetails show
 Section "Required files" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "open_teradata_viewer_0.34b.exe"
+  File "open_teradata_viewer_0.34c.exe"
   File "readme.txt"
   File "terajdbc4.jar"
   File "english_dic.zip"
@@ -72,9 +72,9 @@ Section "Required files" SEC01
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34b.exe"
-  CreateShortCut "$DESKTOP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34b.exe"
-  CreateShortCut "$QUICKLAUNCH\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34b.exe" "" "$INSTDIR\open_teradata_viewer_0.34b.exe" 0
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34c.exe"
+  CreateShortCut "$DESKTOP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34c.exe"
+  CreateShortCut "$QUICKLAUNCH\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.34c.exe" "" "$INSTDIR\open_teradata_viewer_0.34c.exe" 0
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -112,10 +112,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\open_teradata_viewer_0.34b.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\open_teradata_viewer_0.34c.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\open_teradata_viewer_0.34b.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\open_teradata_viewer_0.34c.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -182,7 +182,7 @@ Section Uninstall
   Delete "$INSTDIR\groovy-all-3.0.0-alpha-1.jar"
   Delete "$INSTDIR\rhino-1.7.10.jar"
   Delete "$INSTDIR\macros\*"
-  Delete "$INSTDIR\open_teradata_viewer_0.34b.exe"
+  Delete "$INSTDIR\open_teradata_viewer_0.34c.exe"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
