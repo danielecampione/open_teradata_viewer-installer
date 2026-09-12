@@ -1,4 +1,4 @@
-; Installer for Open Teradata Viewer 0.36c
+; Installer for Open Teradata Viewer 0.37a
 ;
 ; This script is written in NSIS language.
 ;
@@ -7,10 +7,10 @@
 ;--------------------------------
 
 !define PRODUCT_NAME "Open Teradata Viewer"
-!define PRODUCT_VERSION "0.36c"
+!define PRODUCT_VERSION "0.37a"
 !define PRODUCT_PUBLISHER "Open Source Community"
 !define PRODUCT_WEB_SITE "http://openteradata.sourceforge.net"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\open_teradata_viewer_0.36c.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\open_teradata_viewer_0.37a.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
@@ -41,7 +41,7 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\open_teradata_viewer_0.36c.exe"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\open_teradata_viewer_0.37a.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -53,7 +53,7 @@ var ICONS_GROUP
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "open_teradata_viewer_0.36c_setup.exe"
+OutFile "open_teradata_viewer_0.37a_setup.exe"
 InstallDir "$PROGRAMFILES\Open Teradata Viewer"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -62,24 +62,34 @@ ShowUnInstDetails show
 Section "Required files" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "open_teradata_viewer_0.36c.exe"
+  File "open_teradata_viewer_0.37a.exe"
+  File "english_dic.zip"
+
+  File "groovy-3.0.25.jar"
+  File "groovy-jsr223-3.0.25.jar"
+
   File "readme.txt"
   File "terajdbc4.jar"
-  File "english_dic.zip"
-  File "groovy-all-3.0.0-alpha-1.jar"
+  File "mysql-connector-j-8.0.33.jar"
+  File "ojdbc11.jar"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.36c.exe"
-  CreateShortCut "$DESKTOP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.36c.exe"
-  CreateShortCut "$QUICKLAUNCH\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.36c.exe" "" "$INSTDIR\open_teradata_viewer_0.36c.exe" 0
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.37a.exe"
+  CreateShortCut "$DESKTOP\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.37a.exe"
+  CreateShortCut "$QUICKLAUNCH\Open Teradata Viewer.lnk" "$INSTDIR\open_teradata_viewer_0.37a.exe" "" "$INSTDIR\open_teradata_viewer_0.37a.exe" 0
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
 Section "Optional files" SEC02
   File "kunststoff.jar"
   File "liquidlnf.jar"
+
+  File "ephemeral-chroma-java-2.0.0.jar"
+  File "radiance-animation-9.0.0.jar"
+  File "radiance-common-9.0.0.jar"
+  File "radiance-theming-9.0.0.jar"
 
 ; Shortcuts
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -111,10 +121,10 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\open_teradata_viewer_0.36c.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\open_teradata_viewer_0.37a.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\open_teradata_viewer_0.36c.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\open_teradata_viewer_0.37a.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
@@ -174,14 +184,36 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\english_dic.zip"
-  Delete "$INSTDIR\liquidlnf.jar"
-  Delete "$INSTDIR\kunststoff.jar"
+
   Delete "$INSTDIR\terajdbc4.jar"
   Delete "$INSTDIR\readme.txt"
+  Delete "$INSTDIR\mysql-connector-j-8.0.33.jar"
+  Delete "$INSTDIR\ojdbc11.jar"
+  
   Delete "$INSTDIR\groovy-all-3.0.0-alpha-1.jar"
+  
+  Delete "$INSTDIR\groovy-3.0.25.jar"
+  Delete "$INSTDIR\groovy-jsr223-3.0.25.jar"
+  
   Delete "$INSTDIR\rhino-1.7.10.jar"
+
+  Delete "$INSTDIR\liquidlnf.jar"
+  Delete "$INSTDIR\kunststoff.jar"
+  
+  Delete "$INSTDIR\flamingo-7.3.jar"
+  Delete "$INSTDIR\laf-plugin-7.3.jar"
+  Delete "$INSTDIR\laf-widget-7.3.jar"
+  Delete "$INSTDIR\substance-7.3.jar"
+  Delete "$INSTDIR\substance-flamingo-7.3.jar"
+  Delete "$INSTDIR\trident-7.3.jar"
+
+  Delete "$INSTDIR\ephemeral-chroma-java-2.0.0.jar"
+  Delete "$INSTDIR\radiance-animation-9.0.0.jar"
+  Delete "$INSTDIR\radiance-common-9.0.0.jar"
+  Delete "$INSTDIR\radiance-theming-9.0.0.jar"
+  
   Delete "$INSTDIR\macros\*"
-  Delete "$INSTDIR\open_teradata_viewer_0.36c.exe"
+  Delete "$INSTDIR\open_teradata_viewer_0.37a.exe"
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
